@@ -16,14 +16,14 @@ public class VisitController: ControllerBase
 
 
 
-    [HttpGet("{int:id}")]
-    public IActionResult getVisistOfAnimal(int idOfAnimal)
+    [HttpGet("{id:int}")]
+    public IActionResult getVisistOfAnimal(int id)
     {
         List<Visit> visitsOfAnimal=new List<Visit>();
 
         foreach (var visit in _visists)
         {
-            if (visit.AnimalId == idOfAnimal)
+            if (visit.AnimalId == id)
             {
                 visitsOfAnimal.Add(visit);
             }
@@ -34,14 +34,20 @@ public class VisitController: ControllerBase
             return Ok(visitsOfAnimal);
         }
 
-        return NotFound($"Not found animal with {idOfAnimal}");
+        return NotFound($"Not found animal with {id}");
     }
 
     [HttpPost]
     public IActionResult addVisist(Visit visit)
     {
-        _visists.Add(visit);
-        return StatusCode(StatusCodes.Status201Created);
+        var visitWithSameId = _visists.FirstOrDefault(v => v.Id == visit.Id);
+        if (visitWithSameId == null)
+        {
+            _visists.Add(visit);
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
+        return StatusCode(StatusCodes.Status409Conflict);
     }
     
     
