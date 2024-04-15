@@ -14,7 +14,7 @@ public class AnimalController: ControllerBase
     };
     
     [HttpGet]
-    public IActionResult GetStudents()
+    public IActionResult GetAnimals()
     {
         return Ok(_animals);
     }
@@ -55,7 +55,7 @@ public class AnimalController: ControllerBase
     }
     
     [HttpDelete("{id:int}")]
-    public IActionResult DeleteStudent(int id)
+    public IActionResult DeleteAnimal(int id)
     {
         var animalToEdit= _animals.FirstOrDefault(an=>an.id == id);
         if (animalToEdit == null)
